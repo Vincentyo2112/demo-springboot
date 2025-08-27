@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo2.model.User;
 import com.example.demo2.service.LoginService;
+import com.example.demo2.utils.Lib;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/login")
+public class LoginController {
     @Autowired
     private LoginService service;
 
@@ -28,13 +31,16 @@ public class UserController {
         return "index";
     }
 
-    @PostMapping("/login")
+    @PostMapping
     @ResponseBody
-    public Map<String, Object> login(@RequestParam String user, @RequestParam String pass){
+    public Map<String, Object> login(HttpServletResponse response, @RequestParam String user, @RequestParam String pass){
         Map<String, Object> res = new HashMap<>();
         try {
             
             res.put("user", service.login(user, pass));
+            // Lib.setCookie(response, "user", "value", 60*60);
+            Lib.setCookie(response, "user", "value", 60*60);
+            
         } catch (Exception e) {
             res.put("message", e.getMessage());
         }

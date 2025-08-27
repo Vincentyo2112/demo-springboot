@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo2.model.Student;
 import com.example.demo2.service.StudentService;
+import com.example.demo2.utils.Lib;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 
 
@@ -19,9 +22,14 @@ public class StudentController {
     @Autowired
     private StudentService std;
     @GetMapping
-    public String student(Model model) {
+    public String student(HttpServletRequest request, Model model) {
+        String cookie = Lib.getCookie(request, "user");
+        if (cookie == null || cookie.isEmpty()){
+            return "index";
+        } 
         List<Student> list = std.getList();
         model.addAttribute("student", list);
         return "student";
     }
+
 }

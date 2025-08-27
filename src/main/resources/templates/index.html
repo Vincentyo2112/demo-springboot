@@ -65,7 +65,7 @@
             var pass = $("#password").val();
             
             var res = await $.ajax({
-                url: "/user/login",
+                url: "/login",
                 type: "POST",
                 data: {
                     user: user,
@@ -74,11 +74,19 @@
             });
 
             if ("user" in res) {
-                alert(`Ban la ${res.user.username}`)
+                // alert(`Ban la ${res.user.username}`)
+                window.location.href = "/student";               
             } else {
                 alert(res.message);
             }
         }
+        $(document).ready(function(){
+            $('#password').keypress(async function(event) {
+                if(event.which === 13) {
+                    await login();
+                }
+            })
+        })
     </script>
   </body>
 </html>
